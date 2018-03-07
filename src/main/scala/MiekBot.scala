@@ -13,7 +13,7 @@ import scala.util.{Failure, Random, Success}
 object MiekBot extends TelegramBot with Commands with Polling with HttpRequest with RegexCommands {
 
   // TODO hide this (^^)
-  lazy val token: String = "463033409:AAFQvrm7vCQQ0CPfG7zsc9F1o6xuP3rE2ok"
+  lazy val token: String = ""
 
   lazy val excuses: Vector[String] = Vector(
     "Le budget est faux",
