@@ -190,4 +190,21 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
       reply(ast.asJsObject.fields("message").prettyPrint)
     }
   }
+
+  onCommand("/sylvainsepougne") { implicit msg =>
+    reply {
+      """
+        |   ,.   ,.
+        |   \.\ /,/
+        |    Y Y f
+        |    |. .|
+        |    ("_, l
+        |     ,- , \
+        |    (_)(_) Y,.
+        |     _j _j |,'
+        |    (_,(__,'
+        |
+      """.stripMargin
+    }
+  }
 }
