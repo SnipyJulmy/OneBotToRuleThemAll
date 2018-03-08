@@ -21,14 +21,15 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
     "Je ne suis que le concierge"
   )
 
-  lazy val validHttpCode: Set[Int] =
-    (100 to 103).toSet ++
-      (200 to 208).toSet ++
-      (400 to 418).toSet ++
-      (421 to 426).toSet ++
-      (500 to 511).toSet ++
-      (520 to 527).toSet ++
-      Set(210, 226, 428, 429, 431, 449, 450, 451, 456)
+  lazy val validHttpCodeForCatAPI: Set[Int] =
+    (100 to 101).toSet ++
+      (200 to 207).toSet ++
+      (300 to 307).toSet ++
+      (400 to 406).toSet ++
+      (408 to 418).toSet ++
+      (420 to 426).toSet ++
+      (502 to 511).toSet ++
+      Set(429, 431, 444, 450, 451, 500, 599)
 
   onRegex("""^.*[jJ][pP][pP].*$""".r) { implicit msg =>
     args => {
@@ -66,7 +67,7 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
         case Seq() => reply("No argument specified, add an http code")
         case Seq(x) =>
 
-          if (validHttpCode.contains(x.toInt)) {
+          if (validHttpCodeForCatAPI.contains(x.toInt)) {
             val url = s"https://http.cat/$x"
             for {
               res <- Http().singleRequest(HttpRequest(uri = Uri(url)))
@@ -81,11 +82,11 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
             reply {
               s"""
                  |invalid http code, try one of the following :
-                 |${validHttpCode.toList.sorted mkString " "}
+                 |${validHttpCodeForCatAPI.toList.sorted mkString " "}
               """.stripMargin
             }
           }
-        case Seq(x, xs@_*) => reply("too many arguments !")
+        case Seq(_, _*) => reply("too many arguments !")
       }
     }
   }
@@ -133,7 +134,24 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
         case _ => {
           val baseUrl = "https://www.foaas.com/"
           val url = baseUrl + args.tail.mkString("/")
-          requestJson(url)
+
+          println(url)
+
+          requestJson(url).onComplete {
+            case Failure(exception) =>
+              reply {
+                s"""
+                   |error :
+                   |${exception.getMessage}
+                   |${exception.getCause}
+                   """.stripMargin
+              }
+            case Success(value) =>
+              val data = value.asJsObject
+              reply {
+                data.prettyPrint
+              }
+          }
         }
       }
     }
@@ -147,7 +165,7 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
           s"""
              |error :
              |${exception.getMessage}
-             ${exception.getCause}
+             |${exception.getCause}
           """.stripMargin
         }
       case Success(value) =>
