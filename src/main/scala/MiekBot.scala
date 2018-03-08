@@ -8,12 +8,14 @@ import info.mukel.telegrambot4s.methods._
 import info.mukel.telegrambot4s.models._
 import spray.json._
 
+import scala.io.Source
 import scala.util.{Failure, Random, Success}
 
 object MiekBot extends TelegramBot with Commands with Polling with HttpRequest with RegexCommands {
 
-  // TODO hide this (^^)
-  lazy val token: String = ""
+  lazy val token: String = sys.env.getOrElse("MIEK_TOKEN", Source.fromFile("bot.token").getLines().mkString)
+
+  println(s"token : $token")
 
   lazy val excuses: Vector[String] = Vector(
     "Le budget est faux",
