@@ -15,8 +15,6 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
 
   lazy val token: String = sys.env.getOrElse("MIEK_TOKEN", Source.fromFile("bot.token").getLines().mkString)
 
-  println(s"token : $token")
-
   lazy val excuses: Vector[String] = Vector(
     "Le budget est faux",
     "C'est pour le travail",
