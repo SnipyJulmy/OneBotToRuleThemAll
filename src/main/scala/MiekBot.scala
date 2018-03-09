@@ -11,9 +11,9 @@ import spray.json._
 import scala.io.Source
 import scala.util.{Failure, Random, Success}
 
-object MiekBot extends TelegramBot with Commands with Polling with HttpRequest with RegexCommands {
+object MiekBot extends TelegramBot with Commands with Polling with HttpRequest with RegexCommands with NsfwBot {
 
-  lazy val token: String = sys.env.getOrElse("MIEK_TOKEN", Source.fromFile("bot.token").getLines().mkString)
+  lazy val token: String = sys.env.getOrElse("MIEK_BETA", Source.fromFile("bot_beta.token").getLines().mkString)
 
   lazy val excuses: Vector[String] = Vector(
     "Le budget est faux",
@@ -212,12 +212,12 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
   onCommand("/sylvainsepougne") { implicit msg =>
     reply {
       """
-        |   ,.   ,.
-        |   \.\ /,/
-        |    Y Y f
-        |    |. .|
-        |    ("_, l
-        |     ,- , \
+        |    ,.   ,.
+        |    \.\ /,/
+        |     Y Y f
+        |     |. .|
+        |     ("_, l
+        |      ,- , \
         |    (_)(_) Y,.
         |     _j _j |,'
         |    (_,(__,'
