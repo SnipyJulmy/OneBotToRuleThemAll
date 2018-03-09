@@ -68,3 +68,5 @@ project/plugins/project/
 .lib/
 /.idea/
 /bot.token
+/bot_beta.token
+/bot_reddit.token
