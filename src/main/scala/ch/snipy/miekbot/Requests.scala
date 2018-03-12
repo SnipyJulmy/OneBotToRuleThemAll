@@ -9,7 +9,7 @@ import spray.json._
 
 import scala.concurrent.Future
 
-trait HttpRequest extends TelegramBot {
+trait Requests extends TelegramBot {
 
   def requestJson(url: String): Future[JsValue] = {
     for {
