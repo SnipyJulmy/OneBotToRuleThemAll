@@ -4,10 +4,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/**/workspace.xml
 .idea/**/tasks.xml
-.idea/dictionaries
-
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
@@ -19,8 +16,6 @@
 
 # Gradle:
 .idea/**/gradle.xml
-.idea/**/libraries
-
 # CMake
 cmake-build-debug/
 cmake-build-release/
@@ -51,7 +46,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 ### Scala template
-*.class
 *.log
 ### SBT template
 # Simple Build Tool
@@ -60,13 +54,13 @@ fabric.properties
 dist/*
 target/
 lib_managed/
-src_managed/
 project/boot/
 project/plugins/project/
-.history
 .cache
 .lib/
 /.idea/
 /bot.token
 /bot_beta.token
 /bot_reddit.token
+/reddit.psw
+Supprimerait src/test/
