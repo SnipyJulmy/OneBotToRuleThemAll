@@ -1,7 +1,11 @@
-import info.mukel.telegrambot4s.api.{Polling, TelegramBot}
-import info.mukel.telegrambot4s.api.declarative.Commands
+package ch.snipy.miekbot
 
-trait NsfwBot extends TelegramBot with Commands with Polling with HttpRequest {
+import info.mukel.telegrambot4s.api.declarative.Commands
+import info.mukel.telegrambot4s.api.{Polling, TelegramBot}
+
+trait NsfwBot extends TelegramBot with Commands with Polling with HttpRequest with RedditApi {
+
+  println(redditToken)
 
   onCommand("/ass") { msg =>
 
@@ -19,7 +23,7 @@ trait NsfwBot extends TelegramBot with Commands with Polling with HttpRequest {
 
   }
 
-  onCommand("/remisepougne") { msg =>
+  onCommand("/remisenvoieenlair") { msg =>
 
   }
 

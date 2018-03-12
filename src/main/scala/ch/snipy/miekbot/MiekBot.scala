@@ -1,3 +1,5 @@
+package ch.snipy.miekbot
+
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
@@ -31,14 +33,16 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
       (502 to 511).toSet ++
       Set(429, 431, 444, 450, 451, 500, 599)
 
-  onRegex("""^.*[jJ][pP][pP].*$""".r) { implicit msg =>
-    args => {
+  // TODO improve regex
+  onRegex(""".*""".r) { implicit msg =>
+    _ => {
       reply("JPP aussi")
     }
   }
 
+  // TODO random command
   onRegex("""//""".r) { implicit msg =>
-    args => {
+    _ => {
       reply {
         """
           |LBEF
@@ -131,7 +135,7 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
               |check https://www.foaas.com/
             """.stripMargin
           }
-        case _ => {
+        case _ =>
           val baseUrl = "https://www.foaas.com/"
           val url = baseUrl + args.tail.mkString("/")
 
@@ -152,7 +156,6 @@ object MiekBot extends TelegramBot with Commands with Polling with HttpRequest w
                 data.prettyPrint
               }
           }
-        }
       }
     }
   }
