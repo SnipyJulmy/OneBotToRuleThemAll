@@ -27,7 +27,7 @@ trait RedditApi {
     secretId
   )
 
-  val LIMIT = 1000
+  val LIMIT = 300
 
   val userName: String = "SnipyJulmy"
   val clientId: String = "L3gS__LLfMALkQ"
@@ -45,7 +45,8 @@ trait RedditApi {
   val reddit: RedditClient = OAuthHelper.automatic(adapter, credentials)
 
   def posts(subRedditIdentifier: String): Vector[Submission] = {
-    reddit.subreddit(subRedditIdentifier).posts()
+    reddit.subreddit(subRedditIdentifier)
+      .posts()
       .sorting(SubredditSort.TOP)
       .limit(LIMIT)
       .timePeriod(TimePeriod.ALL)

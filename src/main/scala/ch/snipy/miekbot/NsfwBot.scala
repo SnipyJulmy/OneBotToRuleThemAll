@@ -14,7 +14,6 @@ trait NsfwBot extends TelegramBot with Commands with RedditApi with Requests {
   lazy val assPosts: Vector[Submission] = posts("EarthPorn")
   lazy val boobPosts: Vector[Submission] = posts("spaceporn")
 
-
   def sendImage(url: String, imageName: String = "default")(implicit msg: Message): Unit = {
 
     debug(url)
@@ -52,9 +51,13 @@ trait NsfwBot extends TelegramBot with Commands with RedditApi with Requests {
   }
 
   onCommand("/boobs") { implicit msg =>
+    debug("/boobs invoke")
     val sub = boobPosts.rndPick
+    debug("/boobs sub")
     val url = buildImageUrl(sub)
+    debug("/boobs url")
     sendImage(url, sub.getFullName)(msg)
+    debug("/boobs send")
   }
 
   onCommand("/nsfw") {
@@ -108,7 +111,8 @@ trait NsfwBot extends TelegramBot with Commands with RedditApi with Requests {
   }
 
   implicit class RandomPick(subs: Vector[Submission]) {
-    private val itr: Int = Random.nextInt(LIMIT)
+    debug("rndPick invoke")
+    private val itr: Int = Random.nextInt(subs.length)
     debug(s"rndPick : $itr, subs.length : ${subs.length}")
     def rndPick: Submission = subs(itr)
   }
