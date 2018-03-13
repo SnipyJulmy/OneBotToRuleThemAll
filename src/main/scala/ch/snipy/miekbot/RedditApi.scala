@@ -12,39 +12,39 @@ import scala.io.Source
 
 trait RedditApi {
 
-  private lazy val secretId: String = sys.env.getOrElse(
+  lazy val secretId: String = sys.env.getOrElse(
     "MIEK_BOT_REDDIT",
     Source.fromFile("bot_reddit.token").getLines().mkString
   )
-  private lazy val password: String = sys.env.getOrElse(
+  lazy val password: String = sys.env.getOrElse(
     "REDDIT_PSW",
     Source.fromFile("reddit.psw").getLines().mkString
   )
-  private lazy val credentials: Credentials = Credentials.script(
+  lazy val credentials: Credentials = Credentials.script(
     userName,
     password,
     clientId,
     secretId
   )
 
-  private val LIMIT = 100
-  private val userName: String = "SnipyJulmy"
-  private val clientId: String = "L3gS__LLfMALkQ"
-  private val appId: String = "ch.snipy.miekbot"
-  private val version: String = "v0.1"
-  private val botName: String = "MiekBot"
-  private val agent = new UserAgent(
+  val LIMIT = 1000
+
+  val userName: String = "SnipyJulmy"
+  val clientId: String = "L3gS__LLfMALkQ"
+  val appId: String = "ch.snipy.miekbot"
+  val version: String = "v0.1"
+  val botName: String = "MiekBot"
+  val agent = new UserAgent(
     botName,
     appId,
     version,
     userName
   )
 
-  private val adapter = new OkHttpNetworkAdapter(agent)
+  val adapter = new OkHttpNetworkAdapter(agent)
+  val reddit: RedditClient = OAuthHelper.automatic(adapter, credentials)
 
-  protected val reddit: RedditClient = OAuthHelper.automatic(adapter, credentials)
-
-  protected def posts(subRedditIdentifier: String): Vector[Submission] = {
+  def posts(subRedditIdentifier: String): Vector[Submission] = {
     reddit.subreddit(subRedditIdentifier).posts()
       .sorting(SubredditSort.TOP)
       .limit(LIMIT)
