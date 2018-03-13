@@ -4,10 +4,12 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.util.ByteString
+import ch.snipy.miekbot.Debug._
+import info.mukel.telegrambot4s.api.Polling
 import info.mukel.telegrambot4s.api.declarative.{Commands, RegexCommands}
-import info.mukel.telegrambot4s.api.{Polling, TelegramBot}
 import info.mukel.telegrambot4s.methods._
 import info.mukel.telegrambot4s.models._
+import net.dean.jraw.models.Submission
 import spray.json._
 
 import scala.io.Source
@@ -35,6 +37,8 @@ object MiekBot extends NsfwBot with Commands with Polling with Requests with Reg
       (420 to 426).toSet ++
       (502 to 511).toSet ++
       Set(429, 431, 444, 450, 451, 500, 599)
+
+  private lazy val motivationPosts: Vector[Submission] = posts("GetMotivated")
 
   // TODO improve regex
   /*
@@ -215,6 +219,32 @@ object MiekBot extends NsfwBot with Commands with Polling with Requests with Reg
     } {
       reply(ast.asJsObject.fields("message").prettyPrint)
     }
+  }
+
+
+  onCommand("/motivation") { implicit msg =>
+    debug("/motivation invoke")
+    val sub = motivationPosts.rndPick
+    debug("/motivation sub")
+    val url = buildImageUrl(sub)
+    debug("/motivation url")
+
+    requestImage(url).onComplete {
+      case Failure(exception) =>
+        reply {
+          s"""
+             |error :
+             |${exception.getMessage}
+             |${exception.getCause}
+          """.stripMargin
+        }
+      case Success(byteString) =>
+        val photo = InputFile(sub.getFullName + ".jpg", byteString)
+        request(SendChatAction(msg.source, ChatAction.UploadPhoto))
+        request(SendPhoto(msg.source, photo))
+    }
+
+    debug("/motivation send")
   }
 
   onCommand("/sylvainsepougne") { implicit msg =>
