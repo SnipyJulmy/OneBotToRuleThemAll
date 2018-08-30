@@ -19,7 +19,7 @@ object MiekBot extends NsfwBot with Commands with Polling with Requests with Reg
 
   lazy val token: String = sys.env.getOrElse(
     "MIEK_BETA",
-    Source.fromFile("bot_beta.token").getLines().mkString
+    Source.fromFile("bot.token").getLines().mkString
   )
 
   lazy val excuses: Vector[String] = Vector(
